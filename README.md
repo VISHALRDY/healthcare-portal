@@ -83,36 +83,38 @@ MongoDB Atlas
 
 healthcare-portal/
 
-│
+
 ├── frontend/
 
-│ ├── src/
+ ├── src/
 
-│ │ ├── pages/ # Dashboards (Admin, Doctor, Patient)
+ │ ├── pages/ # Dashboards (Admin, Doctor, Patient)
 
-│ │ ├── components/ # Protected routes, shared UI
+ │ ├── components/ # Protected routes, shared UI
 
-│ │ ├── utils/ # API utilities
+ │ ├── utils/ # API utilities
 
-│ │ └── App.jsx
+ │ └── App.jsx
 
-│ └── public/
+ └── public/
 
-│
-├── backend/
 
-│ ├── controllers/ # Business logic
 
-│ ├── routes/ # API routes
+ ├── backend/
 
-│ ├── models/ # MongoDB schemas
+ ├── controllers/ # Business logic
 
-│ ├── middleware/ # Auth middleware
+ ├── routes/ # API routes
 
-│ ├── config/ # DB connection
+ ├── models/ # MongoDB schemas
 
-│ └── server.js
-│
+ ├── middleware/ # Auth middleware
+
+ ├── config/ # DB connection
+
+ └── server.js
+
+
 └── README.md
 
 ---
