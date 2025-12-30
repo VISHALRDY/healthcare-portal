@@ -82,21 +82,35 @@ MongoDB Atlas
 ## 📂 Project Structure
 
 healthcare-portal/
+
 │
 ├── frontend/
+
 │ ├── src/
+
 │ │ ├── pages/ # Dashboards (Admin, Doctor, Patient)
+
 │ │ ├── components/ # Protected routes, shared UI
+
 │ │ ├── utils/ # API utilities
+
 │ │ └── App.jsx
+
 │ └── public/
+
 │
 ├── backend/
+
 │ ├── controllers/ # Business logic
+
 │ ├── routes/ # API routes
+
 │ ├── models/ # MongoDB schemas
+
 │ ├── middleware/ # Auth middleware
+
 │ ├── config/ # DB connection
+
 │ └── server.js
 │
 └── README.md
@@ -110,7 +124,9 @@ VITE_API_URL=https:https://healthcare-portal-34ea.onrender.com
 
 ### Backend (Render)
 MONGO_URI=your_mongodb_atlas_connection_string
+
 JWT_SECRET=your_jwt_secret
+
 FRONTEND_URL=https://healthcareport.netlify.apps
 
 
