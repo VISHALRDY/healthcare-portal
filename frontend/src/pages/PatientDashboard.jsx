@@ -27,6 +27,12 @@ import {
   Box,
 } from "@mui/material";
 
+// ✅ MUI DateTimePicker (with DONE/OK)
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+
 export default function PatientDashboard() {
   const navigate = useNavigate();
 
@@ -37,7 +43,7 @@ export default function PatientDashboard() {
 
   // form
   const [doctorId, setDoctorId] = useState("");
-  const [date, setDate] = useState(""); // datetime-local
+  const [date, setDate] = useState(null); // ✅ dayjs object (for picker)
   const [reason, setReason] = useState("");
 
   // filters
@@ -94,18 +100,20 @@ export default function PatientDashboard() {
       setLoading(true);
       setMsg("");
 
-      // backend expects { doctorId, date(or appointmentDate), reason }
+      // ✅ send ISO string to backend
+      const isoDate = dayjs(date).toISOString();
+
       await apiFetch("/appointments", {
         method: "POST",
         body: JSON.stringify({
           doctorId,
-          date,
+          date: isoDate,
           reason: reason.trim(),
         }),
       });
 
       setDoctorId("");
-      setDate("");
+      setDate(null);
       setReason("");
 
       setMsg("✅ Appointment requested (Pending).");
@@ -138,8 +146,6 @@ export default function PatientDashboard() {
   };
 
   // ✅ IMPORTANT: handle both possible field names
-  // date: appointmentDate OR date
-  // doctor: doctorId OR doctor
   const normalized = useMemo(() => {
     const list = Array.isArray(myAppointments) ? [...myAppointments] : [];
     return list
@@ -148,7 +154,7 @@ export default function PatientDashboard() {
         const doctorObj = a.doctorId || a.doctor || null;
         const doctorName =
           doctorObj?.name || a.doctorName || a.doctor || "Doctor";
-        const notes = a.doctorNotes ?? a.notes ?? ""; // ✅ doctorNotes
+        const notes = a.doctorNotes ?? a.notes ?? "";
         return {
           ...a,
           _apptDate: apptDate,
@@ -249,16 +255,22 @@ export default function PatientDashboard() {
                     </Select>
                   </FormControl>
 
-                  <TextField
-                    fullWidth
-                    sx={{ mb: 2 }}
-                    label="Date & Time"
-                    type="datetime-local"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    InputLabelProps={{ shrink: true }}
-                    disabled={loading}
-                  />
+                  {/* ✅ DateTimePicker WITH DONE button */}
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimePicker
+                      label="Date & Time"
+                      value={date}
+                      onChange={(newValue) => setDate(newValue)}
+                      closeOnSelect={false} // ✅ requires Done/OK
+                      minutesStep={15}
+                      views={["year", "month", "day", "hours", "minutes"]}
+                      slotProps={{
+                        textField: { fullWidth: true, sx: { mb: 2 } },
+                        actionBar: { actions: ["cancel", "accept"] }, // ✅ Cancel + OK(Done)
+                      }}
+                      disabled={loading}
+                    />
+                  </LocalizationProvider>
 
                   <TextField
                     fullWidth
@@ -325,7 +337,6 @@ export default function PatientDashboard() {
                   </Grid>
 
                   <Grid item xs={12} sm={2}>
-                    {/* ✅ Clear button aligned */}
                     <Button
                       fullWidth
                       variant="outlined"
@@ -370,8 +381,6 @@ export default function PatientDashboard() {
                               <TableCell>{dt}</TableCell>
                               <TableCell>{a.reason || "-"}</TableCell>
                               <TableCell>{statusChip(a.status)}</TableCell>
-
-                              {/* ✅ doctor notes visible */}
                               <TableCell>
                                 {a._notes && String(a._notes).trim()
                                   ? a._notes
