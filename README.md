@@ -109,8 +109,8 @@ healthcare-portal/
 VITE_API_URL=https:https://healthcare-portal-34ea.onrender.com
 
 ### Backend (Render)
-MONGO_URI=mongodb+srv://18bd1a0442_db_user:Vivek@cluster0.3iubzj3.mongodb.net/healthcare_portal?retryWrites=true&w=majority&appName=Cluster0
-JWT_SECRET=supersecretkey
+MONGO_URI=mongodb+srv://18bd1a0442_db_user:mypassword@cluster0.3iubzj3.mongodb.net/healthcare_portal?retryWrites=true&w=majority&appName=Cluster0
+JWT_SECRET=secretkey
 FRONTEND_URL=https://healthcareport.netlify.app
 
 ---
